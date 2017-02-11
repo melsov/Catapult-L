@@ -10,12 +10,6 @@ public enum UnpauseEvent
     APP_AWOKE, ON_APP_UNPAUSE
 };
 
-//[Serializable]
-//public class ToggleEvent : UnityEvent<bool>
-//{
-
-//}
-
 public class GameManager : Singleton<GameManager> {
     protected GameManager() { }
 
@@ -61,7 +55,6 @@ public class GameManager : Singleton<GameManager> {
         //    ((MonoBehaviour)gmPause.GetPersistentTarget(i)).SendMessage(gmPause.GetPersistentMethodName(i), isGMPaused);
         //}
 
-        print("about to restart");
         restart(UnpauseEvent.APP_AWOKE);
     }
 

@@ -22,7 +22,10 @@ public class DuckDispenser : MonoBehaviour {
 
     private bool startedMaxFrequency;
     public float duckBarageTimeSeconds = 6f;
-    public float maxFrequency = .025f;
+    public float maxFrequency = .035f;
+
+    public float testFrequency = -1f;
+
     private bool dispensingAlready;
 
     public void Awake() {
@@ -95,11 +98,15 @@ public class DuckDispenser : MonoBehaviour {
     }
 
 	public void increaseFrequency(DuckHitInfo dhi) {
-        if (!startedMaxFrequency) {
-            frequencyMultiplier = Mathf.Max(maxFrequency, frequencyMultiplier * 0.94f);
-        }
-        if (frequencyMultiplier < .04f) {
-            StartCoroutine(resetFrequencyAfterATime());
+        if (testFrequency > 0f) {
+            frequencyMultiplier = testFrequency;
+        } else {
+            if (!startedMaxFrequency) {
+                frequencyMultiplier = Mathf.Max(maxFrequency, frequencyMultiplier * 0.94f);
+            }
+            if (frequencyMultiplier < maxFrequency + maxFrequency * .05f) {
+                StartCoroutine(resetFrequencyAfterATime());
+            }
         }
         updateSpeed(true);
         udpateIntensity();

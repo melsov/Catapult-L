@@ -19,7 +19,7 @@ public class BoulderChoiceMode : ChoiceMode
                     new int[] { 0, 0, 1, 1 },
                     new int[] { 0, 2, 2, 1, 1 },
                     new int[] { 0, 2, 1, 2, 1, 3, 3 },
-                    new int[] { 0, 2, 4, 2, 2, 3, 3, 1, 0, 0, 4, 2, 0, 4, 4 },
+                    new int[] { 0, 2, 4, 2, 2, 3, 3, 1, 0, 0, 4, 2, 0, 4, 4, 5, 5, 5 },
                 };
             }
             return _pickArrays;

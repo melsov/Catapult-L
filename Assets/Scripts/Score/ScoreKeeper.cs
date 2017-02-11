@@ -16,6 +16,20 @@ public class ScoreKeeper :  Singleton<ScoreKeeper> {
 
     public Text text;
     public Text textMobile;
+    private Animator _anim;
+    private Animator anim {
+        get {
+            if(!_anim) {
+#if UNITY_IOS || UNITY_ANDROID
+                _anim = textMobile.GetComponent<Animator>();
+#else
+                _anim = text.GetComponent<Animator>();
+#endif
+            }
+            return _anim;
+        }
+    }
+
 	protected ScoreKeeper() {}
 
     public float ammoBonusMultiplier = 1f;
@@ -62,6 +76,16 @@ public class ScoreKeeper :  Singleton<ScoreKeeper> {
         }
     }
 
+    private Text scoreText {
+        get {
+#if UNITY_IOS || UNITY_ANDROID
+            return textMobile;
+#else
+            return text;
+#endif
+        }
+    }
+
     //TODO: missed ducks no longer subtract from score. instead they subtract from lives
 	private int _score;
     [SerializeField]
@@ -74,12 +98,10 @@ public class ScoreKeeper :  Singleton<ScoreKeeper> {
             
             _score = value;
             HighScore.Instance.updateHighscore(_score);
-            Text scoreText;
-#if UNITY_IOS || UNITY_ANDROID
-            scoreText = textMobile;
-#else
-            scoreText = text;
-#endif
+            if(anim) {
+                anim.SetTrigger("Scored");
+            }
+        
             if (scoreText) {
                 scoreText.text = string.Format("{0}", _score); 
             }
@@ -157,6 +179,9 @@ public class ScoreKeeper :  Singleton<ScoreKeeper> {
 
     private void reset() {
         losePanel.hide();
+        if(scoreText) {
+            scoreText.text = "0";
+        }
         hitsInARow.resetHits();
         _score = 0;
         health = maxHealth;
