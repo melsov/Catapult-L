@@ -65,7 +65,7 @@ public class GameManager : Singleton<GameManager> {
     }
 
     #region inGamePause
-    public void pause() {
+    private void pause() {
         if(isGMPaused) { return; }
         print("invoke gmPause true");
         isGMPaused = true;
@@ -73,7 +73,7 @@ public class GameManager : Singleton<GameManager> {
         //gmPause.Invoke(true);
     }
 
-    public void unpause() {
+    private void unpause() {
         if(!isGMPaused) { return; }
         print("invoke gmPause false");
         isGMPaused = false;
@@ -91,6 +91,7 @@ public class GameManager : Singleton<GameManager> {
     }
 
     private void doInGamePause(bool pause) {
+        if(isGMPaused) { return; }
         inGamePaused = pause;
         Time.timeScale = inGamePaused ? 0f : 1f;
         pauseScrim.gameObject.SetActive(inGamePaused);

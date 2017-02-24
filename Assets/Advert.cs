@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+#if UNITY_IOS || UNITY_ANDROID
 using UnityEngine.Advertisements;
+#endif
 
 public enum AdCompletionStatus
 {
@@ -12,6 +14,9 @@ public enum AdCompletionStatus
 public class Advert : MonoBehaviour 
 {
     private Action<AdCompletionStatus> _onAdDone;
+#if UNITY_EDITOR
+    public bool testAdsAlwaysShow = true;
+#endif
 
     public void showAd(UnpauseEvent unpauseEvent, Action<AdCompletionStatus> onAdDone) {
         _onAdDone = onAdDone;
@@ -22,11 +27,16 @@ public class Advert : MonoBehaviour
             if(_onAdDone != null) { _onAdDone.Invoke(AdCompletionStatus.AD_NOT_ACTUALLY_SHOWN);  }
         }
 #else
-        advertisementDone(AdCompletionStatus.AD_NOT_ACTUALLY_SHOWN); 
+        _onAdDone.Invoke(AdCompletionStatus.AD_NOT_ACTUALLY_SHOWN);
+        //advertisementDone(AdCompletionStatus.AD_NOT_ACTUALLY_SHOWN); 
 #endif
     }
 
     private bool timeToShowAd(UnpauseEvent unpauseEvent) {
+#if UNITY_EDITOR
+        if(testAdsAlwaysShow) { return true; }
+#endif
+#if UNITY_IOS || UNITY_ANDROID
         switch (unpauseEvent) {
             case UnpauseEvent.APP_AWOKE:
                 return timeToShowAdOnStart();
@@ -34,6 +44,9 @@ public class Advert : MonoBehaviour
             default:
                 return timeToShowAdOnUnpause();
         }
+#else
+        return false;
+#endif
     }
 
 #if UNITY_IOS || UNITY_ANDRIOD

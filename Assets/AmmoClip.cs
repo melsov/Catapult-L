@@ -8,7 +8,21 @@ public class AmmoClip : Singleton<AmmoClip> {
 
     public float refillInterval = 8f;
     public int refillAmount = 4;
-    public PercentageBar percentageBar;
+    public RectTransform percentageBarRT;
+    public RectTransform percentageBarRTMobile;
+    private PercentageBar _percentageBar;
+    private PercentageBar percentageBar {
+        get {
+            if (!_percentageBar) {
+#if UNITY_IOS || UNITY_ANDROID
+                _percentageBar = percentageBarRTMobile.GetComponentInChildren<PercentageBar>();
+#else
+                _percentageBar = percentageBarRT.GetComponentInChildren<PercentageBar>();
+#endif
+            }
+            return _percentageBar;
+        }
+    }
 
     public int maxAmmo = 50;
     private int _ammo;

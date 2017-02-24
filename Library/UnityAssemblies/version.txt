@@ -1,7 +1,6 @@
 5.5.1f1:2.8.1.0
-iOS
+WebGL
 E:/EPrograms/Unity/Editor/Data/Managed/UnityEngine.dll
-E:/EPrograms/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll
 E:/EPrograms/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
 E:/EPrograms/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
 E:/EPrograms/Unity/Editor/Data/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll

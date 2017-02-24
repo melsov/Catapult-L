@@ -5,7 +5,10 @@ public class ChoiceMode
 {
     //private DuckOriginals dos;
     private int index;
-    private int duckIntensity;
+    public int duckIntensity {
+        get;
+        private set;
+    }
 
     public void reset() {
         duckIntensity = 0;
@@ -24,10 +27,9 @@ public class ChoiceMode
     }
 
     public void setIntensity(int i) {
-        if (i > duckIntensity) {
+        if (i > duckIntensity && i < pickArrays.Count) {
             index = 0;
             duckIntensity = i;
-            duckIntensity = duckIntensity > pickArrays.Count - 1 ? pickArrays.Count - 1 : duckIntensity;
         }
     }
 

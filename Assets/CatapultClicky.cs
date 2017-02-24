@@ -6,6 +6,8 @@ using System;
 public class CatapultClicky : MonoBehaviour , UpgradeReceiver
 {
     public Boulder[] boulderPrefabs;
+    private BombBoulder bombBoulderPF;
+
     public TrophyShelf trophyShelf;
 
 	//public float strength = 5000f;
@@ -29,6 +31,9 @@ public class CatapultClicky : MonoBehaviour , UpgradeReceiver
     public void Awake() {
         foreach(Boulder b in boulderPrefabs) {
             b.gameObject.SetActive(false);
+            if(b is BombBoulder) {
+                bombBoulderPF = (BombBoulder) b;
+            }
         }
     }
 
@@ -51,7 +56,9 @@ public class CatapultClicky : MonoBehaviour , UpgradeReceiver
 
     private Boulder getNextBoulder() {
         if(AmmoClip.Instance.deductAmmo()) {
-            return Instantiate<Boulder>(boulderPrefabs[choiceMode.getPick()]);
+            return Instantiate<Boulder>(choiceMode.duckIntensity >= (int) BoulderType.BOMB && ScoreKeeper.Instance.hitsInARow.isInARowBonus() ? 
+                bombBoulderPF :
+                boulderPrefabs[choiceMode.getPick()]);
         } else {
             requests.Clear(); 
         }

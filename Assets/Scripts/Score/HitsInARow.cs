@@ -11,6 +11,30 @@ public class HitsInARow : MonoBehaviour
     [SerializeField]
     private Stars stars;
 
+    private class Token
+    {
+        private bool available;
+        public void makeAvailable() {
+            available = true;
+        }
+
+        public bool take() {
+            if (available) {
+                available = false;
+                return true;
+            }
+            return false;
+        }
+    }
+
+    private Token inARowBonus;
+
+    public void Awake() {
+        inARowBonus = new Token();
+    }
+
+    public bool isInARowBonus() { return inARowBonus.take(); }
+
     public void resetHits() {
         _hits = 0;
     }
@@ -19,6 +43,7 @@ public class HitsInARow : MonoBehaviour
         _hits++;
         StartCoroutine(starDuck(dhi.duck, _hits));
         if (_hits >= goal) {
+            inARowBonus.makeAvailable();
             metGoalCallback.Invoke();
             resetHits();
         }

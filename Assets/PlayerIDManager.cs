@@ -15,6 +15,10 @@ public class PlayerIDManager : Singleton<PlayerIDManager> {
         get {
             if(!_nameInput) {
                 //missing ref exception?
+                if (!namePanel) {
+                    print("name panel null");
+                } else print("name panel not null");
+
                 _nameInput = namePanel.GetComponentInChildren<NameInput>();
             }
             return _nameInput;
@@ -26,12 +30,14 @@ public class PlayerIDManager : Singleton<PlayerIDManager> {
     }
 
     public void OnDisable() {
-        nameInput.onSubmitNameCompleted -= playerNameSetupCompleted;
+        if (_nameInput) {
+            _nameInput.onSubmitNameCompleted -= playerNameSetupCompleted;
+        }
     }
 
     private void playerNameSetupCompleted() {
-        namePanel.gameObject.SetActive(false);
         _doneSettingUpPlayerName.Invoke();
+        namePanel.gameObject.SetActive(false);
     }
 
     public void setupPlayerName(Action doneSettingUpPlayerName) {

@@ -34,9 +34,10 @@ public class ScoreKeeper :  Singleton<ScoreKeeper> {
 
     public float ammoBonusMultiplier = 1f;
 
-    private HitsInARow hitsInARow;
+    [HideInInspector]
+    public HitsInARow hitsInARow;
 
-	public void Awake() {
+    public void Awake() {
         hitsInARow = GetComponent<HitsInARow>();
         reset();
     }
@@ -56,7 +57,24 @@ public class ScoreKeeper :  Singleton<ScoreKeeper> {
     }
 
     [SerializeField]
-    private PercentageBar healthBar;
+    private RectTransform healthBarRT;
+    [SerializeField]
+    private RectTransform healthBarRTMobile;
+    private PercentageBar _healthBar;
+    
+    private PercentageBar healthBar {
+        get {
+            if(!_healthBar) {
+#if UNITY_IOS || UNITY_ANDRIOD
+                _healthBar = healthBarRTMobile.GetComponentInChildren<PercentageBar>();
+#else
+                _healthBar = healthBarRT.GetComponentInChildren<PercentageBar>();
+#endif
+            }
+            return _healthBar;
+        }
+    }
+
     [SerializeField]
     private int maxHealth = 1;
     private int _health;
@@ -137,14 +155,14 @@ public class ScoreKeeper :  Singleton<ScoreKeeper> {
 	}
 
 	public void registerAPoint(DuckHitInfo dhi) {
-        score += dhi.boulder.preciousness;
+        score += 1; 
         hitsInARow.addHit(dhi, () => {
             giveBonusAmmo(dhi);
         });
 	}
 
     private void giveHealth(DuckHitInfo dhi) {
-        giveHealth(Mathf.RoundToInt(Mathf.Clamp(dhi.boulder.preciousness / 2f, 1f, 5f)));
+        giveHealth(Mathf.RoundToInt(Mathf.Clamp(dhi.boulder.preciousness / 3f, 1f, 5f)));
     }
 
     private void giveHealth(int amt) {

@@ -57,7 +57,7 @@ public class NameInput : MonoBehaviour {
             PlayerBehaviourData.Instance.playerName = input.text;
         }
         nameLabel.text = PlayerBehaviourData.Instance.playerName;
-        hide(); //TODO: purge
+        //hide(); //TODO: purge
         if(onSubmitNameCompleted != null) { onSubmitNameCompleted(); }
     }
     //TODO: next time there's an ad. if you watch all of it..you'll get...
